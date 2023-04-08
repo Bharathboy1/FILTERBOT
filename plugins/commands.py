@@ -28,6 +28,14 @@ async def start(client, message):
             [
                 InlineKeyboardButton('⚡ SUBSCᏒIBΞ ⚡', url=f"https://t.me/New_movies_hindi_eng"),
             ],
+            
+[
+
+            InlineKeyboardButton('Search again', switch_inline_query_current_chat=query)
+
+        ]
+
+        
             [
                 InlineKeyboardButton(text=DOWNLOAD_TEXT_NAME,url=DOWNLOAD_TEXT_URL)
             ]
