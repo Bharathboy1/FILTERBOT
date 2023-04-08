@@ -28,12 +28,10 @@ async def start(client, message):
             [
                 InlineKeyboardButton('⚡ SUBSCᏒIBΞ ⚡', url=f"https://t.me/New_movies_hindi_eng"),
             ],
-            
-[
+            [
 
-            InlineKeyboardButton('Search again', switch_inline_query_current_chat=query)
-
-        ]
+            InlineKeyboardButton('Search Movies', switch_inline_query_current_chat=query)
+            ],
 
         
             [
@@ -53,6 +51,8 @@ async def start(client, message):
         await client.send_message(LOG_CHANNEL, script.LOG_TEXT_P.format(message.from_user.id, message.from_user.mention))
     if len(message.command) != 2:
         buttons = [[
+            InlineKeyboardButton('🔍 Movies📥', switch_inline_query_current_chat=query)
+            ],[
             InlineKeyboardButton('⚚ ΛᎠᎠ MΞ ϮԾ YԾUᏒ GᏒԾUᎮ ⚚', url=f'http://t.me/{temp.U_NAME}?startgroup=true')
             ],[
             InlineKeyboardButton('⚡ SUBSCᏒIBΞ ⚡', url='https://t.me/New_movies_hindi_eng'),
