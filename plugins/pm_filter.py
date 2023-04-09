@@ -165,10 +165,11 @@ async def advantage_spoll_choker(bot, query):
     if k == False:
         files, offset, total_results = await get_search_results(movie, offset=0, filter=True)
         if files:
+            search = message.text
             k = (movie, files, offset, total_results)
             await auto_filter(bot, query, k)
         else:
-            #await Client.send_message(req_channel, f"#REQUESTED_MOVIES \n\n**CONTENT NAME:**'{search}'**REQUESTED BY :**{message.from_user.first_name}\n**USER ID :** {message.from_user.id}")
+            await Client.send_message(req_channel, f"#REQUESTED_MOVIES \n\n**CONTENT NAME:**'{search}'**REQUESTED BY :**{message.from_user.first_name}\n**USER ID :** {message.from_user.id}")
             k = await query.message.edit('𝚃𝙷𝙸𝚂 𝙼𝙾𝚅𝙸𝙴 I𝚂 𝙽𝙾𝚃 𝚈𝙴𝚃 𝚁𝙴𝙻𝙴𝙰𝚂𝙴𝙳 𝙾𝚁 𝙰𝙳𝙳𝙴𝙳 𝚃𝙾 𝙳𝙰𝚃𝚂𝙱𝙰𝚂𝙴 💌')
             await asyncio.sleep(10)
             await k.delete()
@@ -809,7 +810,7 @@ async def advantage_spell_chok(msg):
     movielist += [(re.sub(r'(\-|\(|\)|_)', '', i, flags=re.IGNORECASE)).strip() for i in gs_parsed]
     movielist = list(dict.fromkeys(movielist))  # removing duplicates
     if not movielist:
-        await Client.send_message(req_channel, f"#REQUESTED_MOVIES \n\n**CONTENT NAME:**'{search}'**REQUESTED BY :**{message.from_user.first_name}\n**USER ID :** {message.from_user.id}")
+       # await Client.send_message(req_channel, f"#REQUESTED_MOVIES \n\n**CONTENT NAME:**'{search}'**REQUESTED BY :**{message.from_user.first_name}\n**USER ID :** {message.from_user.id}")
         k = await msg.reply("I couldn't find anything related to that. Check your spelling")
         await asyncio.sleep(8)
         await k.delete()
