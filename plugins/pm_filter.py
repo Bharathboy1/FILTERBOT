@@ -525,7 +525,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
             reply_markup=reply_markup,
             parse_mode=enums.ParseMode.HTML
         )
-    elif START_MESSAGE("notify_user_not_avail"):
+    elif data.startswith("notify_user_not_avail"):
         _, user_id, movie = data.split(":")
         # Send message to user
         try:
