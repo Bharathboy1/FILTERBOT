@@ -157,11 +157,13 @@ async def advantage_spoll_choker(bot, query):
         return await query.message.delete()
     movies = SPELL_CHECK.get(query.message.reply_to_message.id)
     if not movies:
-        search = message.text
-        await Client.send_message(req_channel, f"#REQUESTED_MOVIES \n\n**CONTENT NAME:**'{search}'**REQUESTED BY :**{message.from_user.first_name}\n**USER ID :** {message.from_user.id}")
+       # search = message.text
+        #await Client.send_message(req_channel, f"#REQUESTED_MOVIES \n\n**CONTENT NAME:**'{search}'**REQUESTED BY :**{message.from_user.first_name}\n**USER ID :** {message.from_user.id}")
         return await query.answer("𝐋𝐢𝐧𝐤 𝐄𝐱𝐩𝐢𝐫𝐞𝐝 𝐊𝐢𝐧𝐝𝐥𝐲 𝐏𝐥𝐞𝐚𝐬𝐞 𝐒𝐞𝐚𝐫𝐜𝐡 𝐀𝐠𝐚𝐢𝐧 🙂.", show_alert=True)
     movie = movies[(int(movie_))]
-    await query.answer('𝙲𝙷𝙴𝙲𝙺𝙸𝙽𝙶 𝙵𝙸𝙻𝙴 𝙾𝙽 𝙼𝚈 𝙳𝙰𝚃𝙰𝙱𝙰𝚂𝙴...//')
+    search = message.text
+        await Client.send_message(req_channel, f"#REQUESTED_MOVIES \n\n**CONTENT NAME:**'{search}'**REQUESTED BY :**{message.from_user.first_name}\n**USER ID :** {message.from_user.id}")
+        return await query.answer('𝙲𝙷𝙴𝙲𝙺𝙸𝙽𝙶 𝙵𝙸𝙻𝙴 𝙾𝙽 𝙼𝚈 𝙳𝙰𝚃𝙰𝙱𝙰𝚂𝙴...//')
     k = await manual_filters(bot, query.message, text=movie)
     if k == False:
         files, offset, total_results = await get_search_results(movie, offset=0, filter=True)
