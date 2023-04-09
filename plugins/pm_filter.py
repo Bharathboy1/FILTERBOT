@@ -20,6 +20,9 @@ from database.filters_mdb import (
     find_filter,
     get_filters,
 )
+import os
+req_channel = int(os.environ.get('REQ_CHANNEL','-1001943990782'))
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -154,6 +157,7 @@ async def advantage_spoll_choker(bot, query):
         return await query.message.delete()
     movies = SPELL_CHECK.get(query.message.reply_to_message.id)
     if not movies:
+       # await Client.send_message(req_channel, f"#REQUESTED_MOVIES \n\n**CONTENT NAME:**'{search}'**REQUESTED BY :**{message.from_user.first_name}\n**USER ID :** {message.from_user.id}")}"
         return await query.answer("𝐋𝐢𝐧𝐤 𝐄𝐱𝐩𝐢𝐫𝐞𝐝 𝐊𝐢𝐧𝐝𝐥𝐲 𝐏𝐥𝐞𝐚𝐬𝐞 𝐒𝐞𝐚𝐫𝐜𝐡 𝐀𝐠𝐚𝐢𝐧 🙂.", show_alert=True)
     movie = movies[(int(movie_))]
     await query.answer('𝙲𝙷𝙴𝙲𝙺𝙸𝙽𝙶 𝙵𝙸𝙻𝙴 𝙾𝙽 𝙼𝚈 𝙳𝙰𝚃𝙰𝙱𝙰𝚂𝙴...//')
@@ -164,6 +168,7 @@ async def advantage_spoll_choker(bot, query):
             k = (movie, files, offset, total_results)
             await auto_filter(bot, query, k)
         else:
+            await Client.send_message(req_channel, f"#REQUESTED_MOVIES \n\n**CONTENT NAME:**'{search}'**REQUESTED BY :**{message.from_user.first_name}\n**USER ID :** {message.from_user.id}")}"
             k = await query.message.edit('𝚃𝙷𝙸𝚂 𝙼𝙾𝚅𝙸𝙴 I𝚂 𝙽𝙾𝚃 𝚈𝙴𝚃 𝚁𝙴𝙻𝙴𝙰𝚂𝙴𝙳 𝙾𝚁 𝙰𝙳𝙳𝙴𝙳 𝚃𝙾 𝙳𝙰𝚃𝚂𝙱𝙰𝚂𝙴 💌')
             await asyncio.sleep(10)
             await k.delete()
