@@ -513,6 +513,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
             reply_markup=reply_markup,
             parse_mode=enums.ParseMode.HTML
         )
+  
+
     elif query.data == "autofilter":
         buttons = [[
             InlineKeyboardButton('👩‍🦯 𝙱𝙰𝙲𝙺', callback_data='help')
@@ -525,9 +527,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         )
      
   
-
-
-    elif data.startswith("notify_user_not_avail"):
+     elif data.startswith("notify_user_not_avail"):
         _, user_id, movie = data.split(":")
         # Send message to user
         try:
