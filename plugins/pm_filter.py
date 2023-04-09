@@ -527,7 +527,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         )
      
   
-     elif data.startswith("notify_user_not_avail"):
+    elif data.startswith("notify_user_not_avail"):
         _, user_id, movie = data.split(":")
         # Send message to user
         try:
