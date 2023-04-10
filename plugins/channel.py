@@ -34,5 +34,14 @@ async def media(bot, message):
         hash_dict[file_hash] = True
         media.file_type = file_type
         media.caption = message.caption
+        
+        # Check all messages in the channel for duplicates
+        async for channel_message in bot.iter_history(chat_id=message.chat.id):
+            for channel_file_type in ("document", "video", "audio"):
+                channel_media = getattr(channel_message, channel_file_type, None)
+                if channel_media is not None and hash(channel_media.file_id) == file_hash:
+                    print("Found duplicate file in channel, deleting message...")
+                    await bot.delete_messages(chat_id=message.chat.id, message_ids=message.message_id)
+                    return
         await save_file(media)
         print("Saved media file:", media)
