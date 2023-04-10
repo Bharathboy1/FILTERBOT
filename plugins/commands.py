@@ -419,8 +419,10 @@ if __name__ == "__main__":
         print("Please set API_ID, API_HASH, and BOT_TOKEN in environment variables")
 
     else:
+       app = Client("my_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
+       app.run()
 
-    return
+    
 
   
 @Client.on_callback_query(filters.regex(r'^autofilter_delete'))
