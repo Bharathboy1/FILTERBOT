@@ -13,3 +13,4 @@ heroku3
 pynewtonmath
 pytz
 aiohttp
+aiogram
