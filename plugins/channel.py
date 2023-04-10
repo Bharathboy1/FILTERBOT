@@ -1,3 +1,4 @@
+import asyncio
 from pyrogram import Client, filters
 
 from info import CHANNELS
@@ -9,6 +10,11 @@ media_filter = filters.document | filters.video | filters.audio
 hash_dict = {}
 
 app = Client("my_account")
+
+async def idle():
+    """Keep the program running"""
+    while True:
+        await asyncio.sleep(60)
 
 @app.on_message(filters.chat(CHANNELS) & media_filter)
 async def media_handler(bot, message):
@@ -70,4 +76,12 @@ async def media_handler(bot, message):
                         # If the file names do not match, add the file name to the dictionary
                         hash_dict[(channel_file_hash, channel_file_size)] = current_file_name
 
-app.run() 
+async def main():
+    """Main Function"""
+    asyncio.ensure_future(idle())
+    await app.start()
+    await idle()
+
+if __name__ == '__main__':
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main()) 
