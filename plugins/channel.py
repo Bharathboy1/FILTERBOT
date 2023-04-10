@@ -61,10 +61,7 @@ async def media_handler(bot, message):
                     current_file_name = channel_media.file_name or channel_media.title
                     if current_file_name == existing_file_name:
                         # If the file names match, delete the duplicate file in the channel
-                        await bot.delete_messages(chat_id=message.chat.id, message_ids=channel_message.message_id)
+                        await bot.delete_messages(chat_id=channel_message.chat.id, message_ids=channel_message.message_id)
                     else:
                         # If the file names do not match, add the file name to the dictionary
                         hash_dict[(channel_file_hash, channel_file_size)] = current_file_name
-                else:
-                    # If the hash value and size do not exist, add the file name to the dictionary
-                    hash_dict[(channel_file_hash, channel_file_size)] = channel_media.file_name or channel_media.title
