@@ -4,44 +4,67 @@ from database.ia_filterdb import save_file
 
 media_filter = filters.document | filters.video | filters.audio
 
-# Create a dictionary to store the hash values of files
+# Create a dictionary to store the hash values and sizes of files
 hash_dict = {}
 
 @Client.on_message(filters.chat(CHANNELS) & media_filter)
-async def media(bot, message):
-    print("Received media message:", message)
+async def media_handler(bot, message):
     """Media Handler"""
     for file_type in ("document", "video", "audio"):
         media = getattr(message, file_type, None)
         if media is not None:
-            print("Found media of type", file_type)
             break
     else:
-        print("No supported media types found")
         return
     
-    # Calculate the hash value of the file
+    # Calculate the hash value and size of the file
     file_hash = hash(media.file_id)
-    print("Generated hash value:", file_hash)
+    file_size = media.file_size
     
-    # Check if the hash value already exists in the dictionary
-    if file_hash in hash_dict:
-        # If the hash value exists, delete the duplicate file
-        print("Found duplicate file, deleting message...")
-        await bot.delete_messages(chat_id=message.chat.id, message_ids=message.message_id)
+    # Check if the hash value and size already exist in the dictionary
+    if (file_hash, file_size) in hash_dict:
+        # If the hash value and size exist, compare the file names
+        existing_file_name = hash_dict[(file_hash, file_size)]
+        current_file_name = media.file_name or media.title
+        if current_file_name == existing_file_name:
+            # If the file names match, delete the duplicate file
+            await bot.delete_messages(chat_id=message.chat.id, message_ids=message.message_id)
+        else:
+            # If the file names do not match, add the file name to the dictionary
+            hash_dict[(file_hash, file_size)] = current_file_name
+            media.file_type = file_type
+            media.caption = message.caption
+            await save_file(media)
     else:
-        # If the hash value does not exist, save the file and add the hash value to the dictionary
-        hash_dict[file_hash] = True
+        # If the hash value and size do not exist, save the file and add the hash value and size to the dictionary
+        hash_dict[(file_hash, file_size)] = media.file_name or media.title
         media.file_type = file_type
         media.caption = message.caption
-        
-        # Check all messages in the channel for duplicates
-        async for channel_message in bot.iter_history(chat_id=message.chat.id):
-            for channel_file_type in ("document", "video", "audio"):
-                channel_media = getattr(channel_message, channel_file_type, None)
-                if channel_media is not None and hash(channel_media.file_id) == file_hash:
-                    print("Found duplicate file in channel, deleting message...")
-                    await bot.delete_messages(chat_id=message.chat.id, message_ids=message.message_id)
-                    return
         await save_file(media)
-        print("Saved media file:", media)
+
+    # Iterate over all the messages in the channel to check for duplicates
+    async for channel_message in bot.iter_history(chat_id=message.chat.id):
+        if channel_message.message_id == message.message_id:
+            # Stop iterating once the current message is reached
+            break
+        
+        for file_type in ("document", "video", "audio"):
+            channel_media = getattr(channel_message, file_type, None)
+            if channel_media is not None:
+                # Calculate the hash value and size of the file in the channel
+                channel_file_hash = hash(channel_media.file_id)
+                channel_file_size = channel_media.file_size
+                
+                if (channel_file_hash, channel_file_size) in hash_dict:
+                    # If the hash value and size exist, compare the file names
+                    existing_file_name = hash_dict[(channel_file_hash, channel_file_size)]
+                    current_file_name = channel_media.file_name or channel_media.title
+                    if current_file_name == existing_file_name:
+                        # If the file names match, delete the duplicate file in the channel
+                        await bot.delete_messages(chat_id=message.chat.id, message_ids=channel_message.message_id)
+                    else:
+                        # If the file names do not match, add the file name to the dictionary
+                        hash_dict[(channel_file_hash, channel_file_size)] = current_file_name
+                else:
+                    # If the hash value and size do not exist, add the file name to the dictionary
+                    hash_dict[(channel_file_hash, channel_file_size)] = channel_media.file_name or channel_media.title
