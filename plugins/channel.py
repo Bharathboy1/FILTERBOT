@@ -43,7 +43,7 @@ async def media_handler(bot, message):
         await save_file(media)
 
     # Get all the messages in the channel to check for duplicates
-    channel_messages = await bot.get_history(chat_id=message.chat.id)
+    channel_messages = await bot.get_messages(chat_id=message.chat.id)
     for channel_message in channel_messages:
         if channel_message.message_id == message.message_id:
             # Stop iterating once the current message is reached
