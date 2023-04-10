@@ -6,7 +6,7 @@ COPY requirements.txt /requirements.txt
 
 RUN cd /
 RUN pip3 install -U pip && pip3 install -U -r requirements.txt
-RUN mkdir /Eva
-WORKDIR /Eva
+RUN mkdir /url-auto-delete-shortener-bot
+WORKDIR /url-auto-delete-shortener-bot
 COPY start.sh /start.sh
 CMD ["/bin/bash", "/start.sh"] 
