@@ -823,28 +823,25 @@ async def handle_callback_query(update: Update, context: CallbackContext):
 
     if user_chat_member.status not in ['administrator', 'creator']:
 
-        await query.answer("Sorry, only admins can perform this action.")
+    await query.answer("Sorry, only admins can perform this action.")
 
-        return
+    return
 
-    l = await message.reply_text(text=f"△ 𝙷𝚎𝚢 𝚜𝚘𝚗𝚊 `{message.from_user.first_name}` 😎,\n\nʏᴏᴜʀ ʀᴇQᴜᴇꜱᴛ ʜᴀꜱ ʙᴇᴇɴ ꜱᴇɴᴛ ᴛᴏ ᴏᴜʀ **ᴀᴅᴍɪɴ'ꜱ ᴅᴀꜱʜʙᴏᴀʀᴅ** !\nᴘʟᴇᴀꜱᴇ ᴋᴇᴇᴘ ꜱᴏᴍᴇ ᴘᴀᴛɪᴇɴᴄᴇ !\nᴛʜᴇʏ ᴡɪʟʟ ᴜᴘʟᴏᴀᴅ ɪᴛ ᴀꜱ ꜱᴏᴏɴ ᴀꜱ ᴘᴏꜱꜱɪʙʟᴇ.\n\n➟ 📝𝘾𝙤𝙣𝙩𝙚𝙣𝙩 𝙣𝙖𝙢𝙚 : `{search}`\n➟ 👮𝙍𝙚𝙦𝙪𝙚𝙨𝙩𝙚𝙙 𝘽𝙮 : `{message.from_user.first_name}`\n\n༺ @New_movies_hindi_eng ༻\n\n╰┈➤・☆ @Bharath_boy",
+l = await message.reply_text(text=f"△ 𝙷𝚎𝚢 𝚜𝚘𝚗𝚊 `{message.from_user.first_name}` 😎,\n\nʏᴏᴜʀ ʀᴇQᴜᴇꜱᴛ ʜᴀꜱ ʙᴇᴇɴ ꜱᴇɴᴛ ᴛᴏ ᴏᴜʀ **ᴀᴅᴍɪɴ'ꜱ ᴅᴀꜱʜʙᴏᴀʀᴅ** !\nᴘʟᴇᴀꜱᴇ ᴋᴇᴇᴘ ꜱᴏᴍᴇ ᴘᴀᴛɪᴇɴᴄᴇ !\nᴛʜᴇʏ ᴡɪʟʟ ᴜᴘʟᴏᴀᴅ ɪᴛ ᴀꜱ ꜱᴏᴏɴ ᴀꜱ ᴘᴏꜱꜱɪʙʟᴇ.\n\n➟ 📝𝘾𝙤𝙣𝙩𝙚𝙣𝙩 𝙣𝙖𝙢𝙚 : `{search}`\n➟ 👮𝙍𝙚𝙦𝙪𝙚𝙨𝙩𝙚𝙙 𝘽𝙮 : `{message.from_user.first_name}`\n\n༺ @New_movies_hindi_eng ༻\n\n╰┈➤・☆ @Bharath_boy",
 
-                                                                                                       reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("━ • │▌║  SEE YOUR REQUEST ║▌│ • ━", url=f'https://t.me/REQ_MOVIES_LOG')],[InlineKeyboardButton("✪ MAIN channel✪", url=f"https://t.me/New_movies_hindi_eng"), InlineKeyboardButton("✪ MOVIES REQUEST GRP ✪", url=f"https://t.me/WEB_MOVIES_REQ")],[InlineKeyboardButton("╚»♥️ Thank You ♥️«╝", callback_data="close_data")]]))
+                           reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("━ • │▌║  SEE YOUR REQUEST ║▌│ • ━", url=f'https://t.me/REQ_MOVIES_LOG')],[InlineKeyboardButton("✪ MAIN channel✪", url=f"https://t.me/New_movies_hindi_eng"), InlineKeyboardButton("✪ MOVIES REQUEST GRP ✪", url=f"https://t.me/WEB_MOVIES_REQ")],[InlineKeyboardButton("╚»♥️ Thank You ♥️«╝", callback_data="close_data")]]))
 
-    await asyncio.sleep(20)
+await asyncio.sleep(20)
 
-    await l.delete()    
+await l.delete()    
 
-    if settings["spell_check"]:
+if settings["spell_check"]:
 
-        return await advantage_spell_chok(msg)
+    return await advantage_spell_chok(msg)
 
-    else:
+else:
 
-        return
-
-        else:
-            return
+    return
     else:
         settings = await get_settings(msg.message.chat.id)
         message = msg.message.reply_to_message  # msg will be callback query
