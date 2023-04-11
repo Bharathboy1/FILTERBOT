@@ -14,4 +14,4 @@ pynewtonmath
 pytz
 aiohttp
 aiogram
-python-telegram-bot
+python-telegram-bot>=13.0
