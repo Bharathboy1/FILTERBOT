@@ -6,7 +6,6 @@ from utils import get_shortlink
 from pyrogram.errors.exceptions.bad_request_400 import MediaEmpty, PhotoInvalidDimensions, WebpageMediaEmpty
 from Script import script
 import pyrogram
-from telegram import TelegramChatPermissions
 from database.connections_mdb import active_connection, all_connections, delete_connection, if_active, make_active, \
     make_inactive
 from info import *
@@ -815,11 +814,11 @@ async def auto_filter(client, msg, spoll=False):
 
             if not files:
 
-                chat_member = await client.get_chat_member(message.chat.id, user_id)
+                #chat_member = await client.get_chat_member(message.chat.id, user_id)
 
-                if chat_member.status not in ['creator', 'administrator']:
+                #if chat_member.status not in ['creator', 'administrator']:
 
-                    return  # Only admins can click the buttons
+                    #return  # Only admins can click the buttons
 
                 await client.send_message(req_channel, f"-🦋 #REQUESTED_CONTENT 🦋-\n\n📝**Content Name** :`{search}`\n**Requested By**: {message.from_user.first_name}\n **USER ID**:{message.from_user.id}\n\n🗃️",
 
@@ -857,7 +856,7 @@ async def auto_filter(client, msg, spoll=False):
 
                 l = await message.reply_text(text=f"△ 𝙷𝚎𝚢 𝚜𝚘𝚗𝚊 `{message.from_user.first_name}` 😎,\n\nʏᴏᴜʀ ʀᴇQᴜᴇꜱᴛ ʜᴀꜱ ʙᴇᴇɴ ꜱᴇɴᴛ ᴛᴏ ᴏᴜʀ **ᴀᴅᴍɪɴ'ꜱ ᴅᴀꜱʜʙᴏᴀʀᴅ** !\nᴘʟᴇᴀꜱᴇ ᴋᴇᴇᴘ ꜱᴏᴍᴇ ᴘᴀᴛɪᴇɴᴄᴇ !\nᴛʜᴇʏ ᴡɪʟʟ ᴜᴘʟᴏᴀᴅ ɪᴛ ᴀꜱ ꜱᴏᴏɴ ᴀꜱ ᴘᴏꜱꜱɪʙʟᴇ.\n\n➟ 📝𝘾𝙤𝙣𝙩𝙚𝙣𝙩 𝙣𝙖𝙢𝙚 : `{search}`\n➟ 👮𝙍𝙚𝙦𝙪𝙚𝙨𝙩𝙚𝙙 𝘽𝙮 : `{message.from_user.first_name}`\n\n༺ @New_movies_hindi_eng ༻\n\n╰┈➤・☆ @Bharath_boy",
 
-                                                                                                       reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("━ • │▌║  SEE YOUR REQUEST ║▌│ • ━", url=f'https://t.me/REQ_MOVIES_LOG')],[InlineKeyboardButton("✪ MAIN channel✪", url=f"https://t.me/New_movies_hindi_eng"), InlineKeyboardButton("✪ MOVIES REQUEST GRP ✪", url=f"https://t.me/WEB_MOVIES_REQ")],[InlineKeyboardButton("╚»♥️ Thank You ♥️«╝", callback_data="close_data")]]))
+                                                                                                       reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("━ • │▌║ MAIN CHANNEL ║▌│ • ━", url=f'https://t.me/New_movies_hindi_eng')],[InlineKeyboardButton("✪ MAIN channel✪", url=f"https://t.me/New_movies_hindi_eng"), InlineKeyboardButton("✪ MOVIES REQUEST GRP ✪", url=f"https://t.me/WEB_MOVIES_REQ")],[InlineKeyboardButton("╚»♥️ Thank You ♥️«╝", callback_data="close_data")]]))
 
                 await asyncio.sleep(20)
 
