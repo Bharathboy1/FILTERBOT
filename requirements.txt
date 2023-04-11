@@ -15,3 +15,5 @@ pytz
 aiohttp
 aiogram
 python-telegram-bot>=13.0
+httpx==0.16.1
+
