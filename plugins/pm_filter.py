@@ -787,32 +787,67 @@ async def cb_handler(client: Client, query: CallbackQuery):
 
 
 async def auto_filter(client, msg, spoll=False):
+
     if not spoll:
+
         message = msg
+
         settings = await get_settings(message.chat.id)
+
         if message.text.startswith("/"): return  # ignore commands
+
         if re.findall("((^\/|^,|^!|^\.|^[\U0001F600-\U000E007F]).*)", message.text):
+
             return
+
         if 2 < len(message.text) < 100:
+
             search = message.text
+
            
+
             requested_movie = search.strip()
+
             user_id = message.from_user.id
+
             files, offset, total_results = await get_search_results(search.lower(), offset=0, filter=True)
+
             if not files:
+
+                admins = await client.get_chat_administrators(message.chat.id)
+
+                admin_ids = [admin.user.id for admin in admins]
+
+                if user_id not in admin_ids:
+
+                    return  # Only admins can click the buttons
+
                 await client.send_message(req_channel, f"-🦋 #REQUESTED_CONTENT 🦋-\n\n📝**Content Name** :`{search}`\n**Requested By**: {message.from_user.first_name}\n **USER ID**:{message.from_user.id}\n\n🗃️",
+
                                 reply_markup=InlineKeyboardMarkup([
+
                                     [
+
                                         InlineKeyboardButton(text=f"✅Upload Done", callback_data=f"notify_userupl:{user_id}:{requested_movie}"),
+
                                     ],
+
                                     [
+
                                         InlineKeyboardButton(text=f"⚡Already Upl..", callback_data=f"notify_user_alrupl:{user_id}:{requested_movie}"),
+
                                         InlineKeyboardButton("🖊Spell Error", callback_data=f"notify_user_spelling_error:{user_id}:{requested_movie}")
+
                                     ],
+
                                     [
+
                                         InlineKeyboardButton(text=f"😒Not Available", callback_data=f"notify_user_not_avail:{user_id}:{requested_movie}"),
+
                                         InlineKeyboardButton("❌Reject Req", callback_data=f"notify_user_req_rejected:{user_id}:{requested_movie}")
+
                                     ],
+
                                 ]))
 
 ##async def handle_callback_query(update: Update, context: CallbackContext):
@@ -835,7 +870,7 @@ async def auto_filter(client, msg, spoll=False):
 
                 else:
 
-                     return
+                    return
         else:
             return
     else:
