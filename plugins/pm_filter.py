@@ -814,11 +814,9 @@ async def auto_filter(client, msg, spoll=False):
 
             if not files:
 
-                admins = await client.get_chat_administrators(message.chat.id)
+                chat_member = await client.get_chat_member(message.chat.id, user_id)
 
-                admin_ids = [admin.user.id for admin in admins]
-
-                if user_id not in admin_ids:
+                if chat_member.status not in ['creator', 'administrator']:
 
                     return  # Only admins can click the buttons
 
