@@ -397,12 +397,19 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 await query.answer(url=f"https://telegram.dog/{temp.U_NAME}?start={ident}_{file_id}")
                 return
             else:
-                await client.send_cached_media(
+                button = InlineKeyboardButton('Forward', callback_data=f'forward_{file_id}')
+                markup = InlineKeyboardMarkup([[button]])
+                d = await client.send_cached_media(
                     chat_id=query.from_user.id,
                     file_id=file_id,
                     caption=f_caption,
+                    reply_markup=markup,
+                 #   reply_markup=InlinekeyboardMarkup([[InlineKeyboardButton('JOIN CHANNEL',url='https://t.me/Filmztube')]]),
                     protect_content=True if ident == "filep" else False 
                 )
+                await asyncio.sleep(86400)
+                await d.delete()
+                
                 await query.answer('Check PM, I have sent files in pm', show_alert=True)
         except UserIsBlocked:
             await query.answer('You Are Blocked to use me !', show_alert=True)
@@ -432,15 +439,27 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 f_caption = f_caption
         if f_caption is None:
             f_caption = f"{title}"
+        f_caption += "\n\n•This file will be automatically deleted after 24 hours\n•Please save it to saved message or forward it anywhere."
+
         await query.answer()
-        await client.send_cached_media(
-            chat_id=query.from_user.id,
-            file_id=file_id,
-            caption=f_caption,
-            protect_content=True if ident == 'checksubp' else False
+        button = InlineKeyboardButton('Forward', callback_data=f'forward_{file_id}')
+        markup = InlineKeyboardMarkup([[button]])
+        d = await client.send_cached_media(
+                    chat_id=query.from_user.id,
+                    file_id=file_id,
+                    caption=f_caption,
+                    reply_markup=markup,
+                 #   reply_markup=InlinekeyboardMarkup([[InlineKeyboardButton('JOIN CHANNEL',url='https://t.me/Filmztube')]]),
+                    protect_content=True if ident == "filep" else False 
         )
+        await asyncio.sleep(86400)
+        await d.delete()
     elif query.data == "pages":
         await query.answer()
+    elif query.data.startswith('forward_'):
+    file_id = query.data.split('_')[1]
+    await client.forward_messages(chat_id=query.message.chat.id, from_chat_id=query.from_user.id, message_ids=query.message.message_id)
+
     elif query.data == "start":
         buttons = [[
             InlineKeyboardButton('⚚ ΛᎠᎠ MΞ ϮԾ YԾUᏒ GᏒԾUᎮ ⚚', url=f'http://t.me/{temp.U_NAME}?startgroup=true')
