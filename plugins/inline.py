@@ -65,6 +65,7 @@ async def answer(bot, query):
                 f_caption=f_caption
         if f_caption is None:
             f_caption = f"{file.file_name}"
+            f_caption += "\n\n•This file will be automatically deleted after 24 hours\n•Please save it to saved message or forward it anywhere."
         results.append(
             InlineQueryResultCachedDocument(
                 title=file.file_name,
@@ -72,6 +73,8 @@ async def answer(bot, query):
                 caption=f_caption,
                 description=f'Size: {get_size(file.file_size)}\nType: {file.file_type}',
                 reply_markup=reply_markup))
+        await asyncio.sleep(86400)
+        await d.delete()
 
     if results:
         switch_pm_text = f"{emoji.FILE_FOLDER} Results - {total}"
@@ -98,16 +101,21 @@ async def answer(bot, query):
                            cache_time=cache_time,
                            switch_pm_text=switch_pm_text,
                            switch_pm_parameter="okay")
+    if query.data.startswith("forward_"):
+        file_id = query.data.split("_")[1]
+    # Perform the forward action using the file_id
+        await client.forward_message(chat_id, from_chat_id, message_id)
+    # You can also delete the message or perform any other actions if needed
+        await query.answer('I hope your Message got forwarded!')
 
 
-def get_reply_markup(query):
+def get_reply_markup(query, file_id):
     buttons = [
         [
             InlineKeyboardButton('Search again', switch_inline_query_current_chat=query)
+        ],
+        [
+            InlineKeyboardButton('Forward', callback_data=f'forward_{file_id}')
         ]
-        ]
+    ]
     return InlineKeyboardMarkup(buttons)
-
-
-
-
