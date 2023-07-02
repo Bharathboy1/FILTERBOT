@@ -14,7 +14,7 @@ def is_enabled(value, default):
 SESSION = environ.get('SESSION', 'Media_search')
 API_ID = int(environ.get('API_ID', '4234473'))
 API_HASH = environ.get('API_HASH', '6d9e82c9edc244b0c0a20d8fa89f9784')
-BOT_TOKEN = environ.get('BOT_TOKEN', "6268719215:AAFXrTuEhXw6j8vP-40yQC35ixD_NnUGqQI")
+BOT_TOKEN = environ.get('BOT_TOKEN', "5965090572:AAEaBQxjFwnaa2_g__n6nLmnKT7kZPq4sVU")
 
 # Bot settings
 CACHE_TIME = int(environ.get('CACHE_TIME', 300))
@@ -24,7 +24,7 @@ PICS = (environ.get('PICS', 'https://telegra.ph/file/b806ad314d0c415571bde.jpg')
 # Admins, Channels & Users
 ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '634637418').split()]
 CHANNELS = [int(ch) if id_pattern.search(ch) else ch for ch in environ.get('CHANNELS', '-1001985756146').split()]
-auth_users = [int(user) if id_pattern.search(user) else user for user in environ.get('AUTH_USERS', '').split()]
+auth_users = [int(user) if id_pattern.search(user) else user for user in environ.get('AUTH_USERS', '634637418').split()]
 AUTH_USERS = (auth_users + ADMINS) if auth_users else []
 auth_channel = environ.get('AUTH_CHANNEL', '-1001776533060')
 auth_grp = environ.get('AUTH_GROUP')
@@ -33,8 +33,8 @@ AUTH_GROUPS = [int(ch) for ch in auth_grp.split()] if auth_grp else None
 
 # MongoDB information
 DATABASE_URI = environ.get('DATABASE_URI', "mongodb://karthik:karthik@ac-sry7xij-shard-00-00.wlp6rd4.mongodb.net:27017,ac-sry7xij-shard-00-01.wlp6rd4.mongodb.net:27017,ac-sry7xij-shard-00-02.wlp6rd4.mongodb.net:27017/?ssl=true&replicaSet=atlas-efnevi-shard-0&authSource=admin&retryWrites=true&w=majority")
-DATABASE_NAME = environ.get('DATABASE_NAME', "buarath")
-COLLECTION_NAME = environ.get('COLLECTION_NAME', 'Telegram_files')
+DATABASE_NAME = environ.get('DATABASE_NAME', "bharath")
+COLLECTION_NAME = environ.get('COLLECTION_NAME', 'Anurag_Files')
 
 # Others
 LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1001811764554'))
