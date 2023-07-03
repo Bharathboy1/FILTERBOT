@@ -67,12 +67,12 @@ async def next_page(bot, query):
     if int(req) not in [query.from_user.id, 0]:
         return await query.answer("Send your own we will give you😘", show_alert=True)
     #/try:
-        offset = int(offset)
-    except:
-        offset = 0
-    search = BUTTONS.get(key)
-    if not search:
-        await query.answer("You are using one of my old messages, please send the request again.", show_alert=True)
+      #  offset = int(offset)
+   # except:
+     #   offset = 0
+   # search = BUTTONS.get(key)
+  #  if not search:
+     #   await query.answer("You are using one of my old messages, please send the request again.", show_alert=True)
       #  return
 
 #    files, n_offset, total = await get_search_results(search, offset=offset, filter=True)
