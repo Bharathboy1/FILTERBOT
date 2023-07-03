@@ -457,8 +457,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
     elif query.data == "pages":
         await query.answer()
     elif query.data.startswith('forward_'):
-    file_id = query.data.split('_')[1]
-    await client.forward_messages(chat_id=query.message.chat.id, from_chat_id=query.from_user.id, message_ids=query.message.message_id)
+        file_id = query.data.split('_')[1]
+        await client.forward_messages(chat_id=query.message.chat.id, from_chat_id=query.from_user.id, message_ids=query.message.message_id)
 
     elif query.data == "start":
         buttons = [[
