@@ -23,12 +23,12 @@ async def inline_users(query: InlineQuery):
 async def answer(bot, query):
     """Show search results for given inline query"""
     
-    if query.data.startswith("forward_"):
-        file_id = query.data.split("_")[1]
+   # if query.data.startswith("forward_"):
+       # file_id = query.data.split("_")[1]
         # Perform the forward action using the file_id
-        await bot.forward_messages(chat_id, from_chat_id, file_id)
+        #await bot.forward_messages(chat_id, from_chat_id, file_id)
         # You can also delete the message or perform any other actions if needed
-        await query.answer('I hope your Message got forwarded!')
+        #await query.answer('I hope your Message got forwarded!')
 
     # Existing code...
 
@@ -46,6 +46,29 @@ async def answer(bot, query):
                            switch_pm_text='You have to subscribe my channel to use the bot',
                            switch_pm_parameter="subscribe")
         return
+    if isinstance(query, InlineQuery):
+        # Handle the inline query
+        
+        # Existing code...
+        
+        # Create and set the inline keyboard
+        reply_markup = get_reply_markup(query.query, file_id=None)
+        
+        # Existing code...
+        
+    elif isinstance(query, CallbackQuery):
+        # Handle the callback query
+        
+        if query.data.startswith("forward_"):
+            file_id = query.data.split("_")[1]
+            
+            # Perform the forward action using the file_id
+            await bot.forward_messages(chat_id, from_chat_id, file_id)
+            
+            # You can also delete the message or perform any other actions if needed
+            await query.answer('I hope your message got forwarded!')
+    
+    # Existing cod
 
     results = []
     if '|' in query.query:
