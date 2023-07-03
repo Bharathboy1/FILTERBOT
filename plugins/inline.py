@@ -23,6 +23,16 @@ async def inline_users(query: InlineQuery):
 async def answer(bot, query):
     """Show search results for given inline query"""
     
+    if query.data.startswith("forward_"):
+        file_id = query.data.split("_")[1]
+        # Perform the forward action using the file_id
+        await bot.forward_messages(chat_id, from_chat_id, file_id)
+        # You can also delete the message or perform any other actions if needed
+        await query.answer('I hope your Message got forwarded!')
+
+    # Existing code...
+
+    
     if not await inline_users(query):
         await query.answer(results=[],
                            cache_time=0,
@@ -102,12 +112,12 @@ async def answer(bot, query):
                            cache_time=cache_time,
                            switch_pm_text=switch_pm_text,
                            switch_pm_parameter="okay")
-    if query.data.startswith("forward_"):
-        file_id = query.data.split("_")[1]
+   # if query.data.startswith("forward_"):
+       # file_id = query.data.split("_")[1]
     # Perform the forward action using the file_id
-        await client.forward_message(chat_id, from_chat_id, message_id)
+        #await client.forward_message(chat_id, from_chat_id, message_id)
     # You can also delete the message or perform any other actions if needed
-        await query.answer('I hope your Message got forwarded!')
+       # await query.answer('I hope your Message got forwarded!')
 
 
 def get_reply_markup(query, file_id):
