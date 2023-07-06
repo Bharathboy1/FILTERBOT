@@ -68,7 +68,7 @@ async def x(app, msg):
         
         #await jj.edit(f"Found {len(id_list)} Files In The DB Starting To Send In Chat {args}")
         
-        for j , i in enumerate(id_list[last_msg:]):
+    for j , i in enumerate(id_list[last_msg:]):
         try:
             try:
                 await app.send_video(
