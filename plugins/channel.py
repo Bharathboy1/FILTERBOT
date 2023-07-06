@@ -177,15 +177,15 @@ async def handle_callback(app, callback_query):
 
 
 @Client.on_message(filters.command("sendlast") & filters.user(ADMINS))
-#async@Client.on_message(filters.command("sendlast") & filters.user(ADMINS))
+#@Client.on_message(filters.command("sendlast") & filters.user(ADMINS))
 async def send_last_messages(app, msg):
     try:
         count = int(msg.command[1])
     except (IndexError, ValueError):
         await msg.reply_text("Please provide a valid number for the count.")
         return
-    
-    documents = col.find({}).sort("_id", -1).limit(count)
+
+    last_messages = col.find({}).sort("_id", -1).limit(count)
     id_list = [
         {
             'id': document['_id'],
@@ -193,10 +193,10 @@ async def send_last_messages(app, msg):
             'file_caption': document.get('caption', 'N/A'),
             'file_size': document.get('file_size', '00')
         } 
-        for document in documents
+        for document in last_messages
     ]
-    
-    for j, i in enumerate(id_list[::-1]):
+
+    for j, i in enumerate(id_list):
         try:
             try:
                 await app.send_video(
@@ -219,7 +219,7 @@ async def send_last_messages(app, msg):
                         file_size=get_size(int(i['file_size']))
                     )
                 )
-            
+
             await asyncio.sleep(random.randint(4, 8))
         except FloodWait as e:
             print(f"Sleeping for {e.x} seconds.")
@@ -228,8 +228,8 @@ async def send_last_messages(app, msg):
             print(e)
             await msg.reply_text("An error occurred while sending messages.")
             break
-    
-            await msg.reply_text("Completed")
+
+    await msg.reply_text("Completed")
 
 
 
