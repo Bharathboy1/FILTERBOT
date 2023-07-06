@@ -52,7 +52,7 @@ async def x(app, msg):
         args = int(args)
     except Exception:
         return await msg.reply_text("Chat Id must be an integer not a string")
-    jj = await msg.reply_text("Processing")
+    jj = await msg.reply_text("Processing...")
     documents = col.find({})
     last_msg = col.find_one({'_id': 'last_msg'})
     if not last_msg:
@@ -74,5 +74,5 @@ async def x(app, msg):
             await asyncio.sleep(random.randint(1, 3))
         except Exception as e:
             print(e)
-    #await jj.delete()
+    await jj.delete()
     await msg.reply_text("Completed")
