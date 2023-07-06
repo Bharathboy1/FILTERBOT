@@ -98,15 +98,15 @@ async def x(app, msg):
     
     id_list = [{'id': document['_id'], 'file_name': document.get('file_name', 'N/A'), 'file_caption': document.get('caption', 'N/A'), 'file_size': document.get('file_size', 'N/A')} for document in documents]
     
-    total_files = len(id_list)
-    processed_files = 0
-    skipped_files = 0
+ #   total_files = len(id_list)
+#    processed_files = 0
+  #  skipped_files = 0
     
     await jj.edit(f"Found {total_files} Files In The DB. Starting To Send In Chat {args}")
     
     for j, i in enumerate(id_list[last_msg:], start=last_msg):
         if j < last_msg:
-            skipped_files += 1
+          #  skipped_files += 1
             continue
  
         if pause_sending:
@@ -127,13 +127,9 @@ async def x(app, msg):
             col.update_one({'_id': 'last_msg'}, {'$set': {'index': j}}, upsert=True)
             await asyncio.sleep(random.randint(5 , 7))
             
-            remaining_files = total_files - processed_files - skipped_files
+            #remaining_files = total_files - processed_files - skipped_files
             
-            progress_text = f"Found {total_files} Files In The DB. Starting To Send In Chat {args}\n" \
-                            f"Processed: {processed_files}\n" \
-                            f"Skipped: {skipped_files}\n" \
-                            f"Remaining: {remaining_files}"
-            await jj.edit(progress_text)
+            
             
             
         except FloodWait as e:
