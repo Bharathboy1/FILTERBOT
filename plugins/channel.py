@@ -118,12 +118,13 @@ async def x(app, msg):
             file_caption = i['file_caption']
             file_size = get_size(int(i['file_size']))
             
-            _, file_extension = os.path.splitext(file_name)
-            file_extension = file_extension.lower()
-            if file_extension in ['.mp4', '.mov', '.avi']:
-                await app.send_video(msg.chat.id, file_id, caption=CUSTOM_FILE_CAPTION.format(file_name=file_name, file_caption=file_caption, file_size=file_size))
-            else:
+            
+            media = await app.get_media(file_id)
+            
+            if media.document:
                 await app.send_document(msg.chat.id, file_id, caption=CUSTOM_FILE_CAPTION.format(file_name=file_name, file_caption=file_caption, file_size=file_size))
+            elif media.video:
+                await app.send_video(msg.chat.id, file_id, caption=CUSTOM_FILE_CAPTION.format(file_name=file_name, file_caption=file_caption, file_size=file_size))
             
             processed_files += 1
             remaining_files = total_files - processed_files - skipped_files
