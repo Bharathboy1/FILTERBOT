@@ -124,14 +124,14 @@ async def x(app, msg):
     # Code for sending video
                 await app.send_video(msg.chat.id, message.video.file_id, caption=CUSTOM_FILE_CAPTION.format(file_name=file_name, file_caption=file_caption, file_size=file_size))
             except Exception as e:
-            await jj.edit(f"Error: {str(e)}")
-            break
+                await jj.edit(f"Error: {str(e)}")
+                break
             elif message.document:
                 if message.document.mime_type.split("/")[0] == "video":
         # Code for sending video
                     await app.send_video(msg.chat.id, message.document.file_id, caption=CUSTOM_FILE_CAPTION.format(file_name=file_name, file_caption=file_caption, file_size=file_size))
-            except Exception as e:
-            await jj.edit(f"Error: {str(e)}")
+                except Exception as e:
+                    await jj.edit(f"Error: {str(e)}")
             break
                 else:
         # Code for sending other documents
