@@ -85,6 +85,8 @@ async def x(app, msg):
                 await asyncio.sleep(random.randint(4, 6))
             except Exception as e:
                 print(e)
+        except Exception:
+            try:
                 await app.send_document(
                     msg.chat.id,
                     i['id'],
@@ -142,6 +144,8 @@ async def send_messages_with_keyword(app, msg):
                 )
             except Exception as e:
                 print(e)
+        except Exception:
+            try:
                 await app.send_document(
                     msg.chat.id,
                     i['id'],
