@@ -106,8 +106,8 @@ async def x(app, msg):
             await jj.delete()
             await msg.reply_text("Completed")
     
-        except Exception as e:
-            print(f"Error: {str(e)}")
+       # except Exception as e:
+        #    print(f"Error: {str(e)}")
 
 
 @Client.on_message(filters.command("sendkey") & filters.user(ADMINS))
