@@ -117,19 +117,19 @@ async def x(app, msg):
             file_name = i['file_name']
             file_caption = i['file_caption']
             file_size = get_size(int(i['file_size']))
-            file_type = media.file_type
+            #file_type = media.file_type
             
-            
-            if file_type == "video":
+            message = msg
+            if message.video:
     # Code for sending video
-                await app.send_video(msg.chat.id, media.file_id, caption=CUSTOM_FILE_CAPTION.format(file_name=file_name, file_caption=file_caption, file_size=file_size))
-            elif file_type == "document":
-               if media.mime_type.split("/")[0] == "video":
+                await app.send_video(msg.chat.id, message.video.file_id, caption=CUSTOM_FILE_CAPTION.format(file_name=file_name, file_caption=file_caption, file_size=file_size))
+            elif message.document:
+                if message.document.mime_type.split("/")[0] == "video":
         # Code for sending video
-                   await app.send_video(msg.chat.id, media.file_id, caption=CUSTOM_FILE_CAPTION.format(file_name=file_name, file_caption=file_caption, file_size=file_size))
-               else:
+                    await app.send_video(msg.chat.id, message.document.file_id, caption=CUSTOM_FILE_CAPTION.format(file_name=file_name, file_caption=file_caption, file_size=file_size))
+                else:
         # Code for sending other documents
-                   await app.send_document(msg.chat.id, media.file_id, caption=CUSTOM_FILE_CAPTION.format(file_name=file_name, file_caption=file_caption, file_size=file_size))
+                    await app.send_document(msg.chat.id, message.document.file_id, caption=CUSTOM_FILE_CAPTION.format(file_name=file_name, file_caption=file_caption, file_size=file_size))
 
             processed_files += 1
             remaining_files = total_files - processed_files - skipped_files
