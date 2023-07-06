@@ -148,7 +148,7 @@ async def x(app, msg):
         except Exception as e:
             await jj.edit(f"Error: {str(e)}")
             break
-    await jj.delete()
+    #await jj.delete()
     await msg.reply_text("Completed")
 
 
