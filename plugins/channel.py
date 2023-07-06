@@ -103,7 +103,7 @@ async def x(app, msg):
             return
        
         try:
-            try:
+            
             file_id = i['id']
             file_name = i['file_name']
             file_caption = i['file_caption']
