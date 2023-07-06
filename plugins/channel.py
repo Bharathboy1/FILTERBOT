@@ -177,12 +177,14 @@ async def handle_callback(app, callback_query):
 
 
 @Client.on_message(filters.command("sendlast") & filters.user(ADMINS))
+async@Client.on_message(filters.command("sendlast") & filters.user(ADMINS))
 async def send_last_messages(app, msg):
     try:
         count = int(msg.command[1])
     except (IndexError, ValueError):
         await msg.reply_text("Please provide a valid number for the count.")
         return
+    
     documents = col.find({}).sort("_id", -1).limit(count)
     id_list = [
         {
@@ -194,7 +196,7 @@ async def send_last_messages(app, msg):
         for document in documents
     ]
     
-    for j, i in enumerate(id_list):
+    for j, i in enumerate(id_list[::-1]):
         try:
             try:
                 await app.send_video(
@@ -218,17 +220,17 @@ async def send_last_messages(app, msg):
                     )
                 )
             
-            await asyncio.sleep(random.randint(4,8))
+            await asyncio.sleep(random.randint(4, 8))
         except FloodWait as e:
             print(f"Sleeping for {e.x} seconds.")
             await asyncio.sleep(e.x)
         except Exception as e:
             print(e)
-            #await jj.delete()
             await msg.reply_text("An error occurred while sending messages.")
             break
     
-    await msg.reply_text("Completed")
+            await msg.reply_text("Completed")
+
 
 
 
