@@ -49,98 +49,65 @@ async def media(bot, message):
         media.caption = message.caption
         await save_file(media)
 
-
-@Client.on_message(filters.command("savefile") & filters.user(ADMINS))
-async def start(client, message):
-    try:
-        for file_type in ("document", "video", "audio"):
-            media = getattr(message.reply_to_message, file_type, None)
-            if media is not None:
-                break
-        else:
-            return
-
-        media.file_type = file_type
-        media.caption = message.reply_to_message.caption
-        await save_file(media)
-        await message.reply_text("**Saved In DB**")
-    except Exception as e:
-        await message.reply_text(f"**Error: {str(e)}**")
-
 @Client.on_message(filters.command("sendall") & filters.user(ADMINS))
-async def x(app, msg):
+async def send_all_files(app, msg):
     global pause_sending, start_sending
-    
+
     if not start_sending:
-        await msg.reply_text("continuing.... , use /resetsend if you want to start from the beginning.")
+        l = await msg.reply_text("Continuing... Use /resetsend if you want to start from the beginning.")
+        await asyncio.sleep(5)
+        await l.delete()
     else:
         col.update_one({'_id': 'last_msg'}, {'$set': {'index': 0}}, upsert=True)
-        await msg.reply_text("Sending has been reset. Messages will be sent from the beginning.")
+        k = await msg.reply_text("Sending has been reset. Messages will be sent from the beginning.")
+        await asyncio.sleep(5)
+        await k.delete()
 
     args = msg.text.split(maxsplit=1)
     if len(args) == 1:
-        return await msg.reply_text("Give Chat ID Also Where To Send Files")
+        return await msg.reply_text("Please provide the Chat ID where the files should be sent.")
     args = args[1]
     try:
         args = int(args)
     except Exception:
-        return await msg.reply_text("Chat ID must be an integer, not a string")
-    
-    jj = await msg.reply_text("Processing")
+        return await msg.reply_text("Chat ID must be an integer.")
+    jj = await msg.reply_text("Processing... Please wait!")
     documents = col.find({})
     last_msg = col.find_one({'_id': 'last_msg'})
-    
     if not last_msg:
         col.update_one({'_id': 'last_msg'}, {'$set': {'index': 0}}, upsert=True)
         last_msg = 0
     else:
         last_msg = last_msg.get('index', 0)
-    
     id_list = [{'id': document['_id'], 'file_name': document.get('file_name', 'N/A'), 'file_caption': document.get('caption', 'N/A'), 'file_size': document.get('file_size', 'N/A')} for document in documents]
-    
- #   total_files = len(id_list)
-#    processed_files = 0
-  #  skipped_files = 0
-    
-    await jj.edit(f"Found {total_files} Files In The DB. Starting To Send In Chat {args}")
-    
+    await jj.edit(f"Found {len(id_list)} files in the database. Starting to send in Chat {args}")
     for j, i in enumerate(id_list[last_msg:], start=last_msg):
         if j < last_msg:
-          #  skipped_files += 1
             continue
- 
+
         if pause_sending:
-            await jj.edit("Sending paused. Use /resumesend to continue.")
-            return
-       
+            break
+
         try:
             try:
-                await app.send_video(msg.chat.id, i['id'], caption=CUSTOM_FILE_CAPTION.format(file_name=i['file_name'], file_caption=i['file_caption'], file_size=i['file_size']))
+                await app.send_video(args, i['id'], caption=CUSTOM_FILE_CAPTION.format(file_name=i['file_name'], file_caption=i['file_caption'], file_size=get_size(int(i['file_size']))))
             except Exception as e:
                 print(e)
-                await app.send_document(msg.chat.id, i['id'], caption=CUSTOM_FILE_CAPTION.format(file_name=i['file_name'], file_caption=i['file_caption'], file_size=i['file_size']))
-            await jj.edit(f"Found {len(id_list)} Files In The DB Starting To Send In Chat {args}\nProcessed: {j+1}")
+                await app.send_document(args, i['id'], caption=CUSTOM_FILE_CAPTION.format(file_name=i['file_name'], file_caption=i['file_caption'], file_size=get_size(int(i['file_size']))))
+            await jj.edit(f"Found {len(id_list)} files in the database. Starting to send in Chat {args}\nProcessed: {j+1}")
             col.update_one({'_id': 'last_msg'}, {'$set': {'index': j}}, upsert=True)
-            await asyncio.sleep(random.randint(8, 10))
-        except Exception as e:
-            print(e)
-            
-            #remaining_files = total_files - processed_files - skipped_files
-            
-            
-            
-            
+            await asyncio.sleep(random.randint(4, 9))
         except FloodWait as e:
             wait_time = e.x  # Get the wait time in seconds
             await jj.edit(f"Encountered 'FloodWait' exception. Waiting for {wait_time} seconds...")
             time.sleep(wait_time)
-#The updated code includes tracking and displaying the number of processed files, skipped files, and remaining files in the live progress. It keeps count of the processed and skipped files during the iteration and subtracts them from the total number of files to calculate the remaining files. The progress is updated in the `jj` message object using the `edit()` method with the updated progress text.
+        except Exception as e:
+            await jj.edit(f"Error: {str(e)}")
+            break
 
-#Please note that you need to adjust the code based on how the file type (`i['file_type']`) is stored in your database. Ensure that you use the correct field or property to access the file type information in your actual code.
+    await jj.delete()
+    await msg.reply_text("Completed!")
 
-        
-    #await jj.delete()
-    await msg.reply_text("Completed")
 
 
 @Client.on_message(filters.command("stopsend") & filters.user(ADMINS))
