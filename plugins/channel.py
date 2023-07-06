@@ -122,7 +122,7 @@ async def x(app, msg):
             if media.file_type == "video":
     # Code for sending video
                 await app.send_video(msg.chat.id, media.file_id, caption=CUSTOM_FILE_CAPTION.format(file_name=file_name, file_caption=file_caption, file_size=file_size))
-           elif media.file_type == "document":
+            elif media.file_type == "document":
                if media.mime_type.split("/")[0] == "video":
         # Code for sending video
                    await app.send_video(msg.chat.id, media.file_id, caption=CUSTOM_FILE_CAPTION.format(file_name=file_name, file_caption=file_caption, file_size=file_size))
