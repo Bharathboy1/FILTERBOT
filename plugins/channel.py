@@ -117,7 +117,9 @@ async def x(app, msg):
             file_caption = i['file_caption']
             file_size = get_size(int(i['file_size']))
             
-            if i['file_type'] == 'video':
+            _, file_extension = os.path.splitext(file_name)
+            file_extension = file_extension.lower()
+            if file_extension in ['.mp4', '.mov', '.avi']:
                 await app.send_video(msg.chat.id, file_id, caption=CUSTOM_FILE_CAPTION.format(file_name=file_name, file_caption=file_caption, file_size=file_size))
             else:
                 await app.send_document(msg.chat.id, file_id, caption=CUSTOM_FILE_CAPTION.format(file_name=file_name, file_caption=file_caption, file_size=file_size))
