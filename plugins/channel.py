@@ -104,10 +104,15 @@ async def x(app, msg):
        
         try:
             try:
-                await app.send_video(msg.chat.id, i['id'], caption=CUSTOM_FILE_CAPTION.format(file_name=i['file_name'], file_caption=i['file_caption'], file_size=get_size(int(i['file_size']))))
-            except Exception as e:
-                print(e)
-                await app.send_document(msg.chat.id, i['id'], caption=CUSTOM_FILE_CAPTION.format(file_name=i['file_name'], file_caption=i['file_caption'], file_size=get_size(int(i['file_size']))))
+            file_id = i['id']
+            file_name = i['file_name']
+            file_caption = i['file_caption']
+            file_size = get_size(int(i['file_size']))
+            
+            if i['file_type'] == 'video':
+                await app.send_video(msg.chat.id, file_id, caption=CUSTOM_FILE_CAPTION.format(file_name=file_name, file_caption=file_caption, file_size=file_size))
+            else:
+                await app.send_document(msg.chat.id, file_id, caption=CUSTOM_FILE_CAPTION.format(file_name=file_name, file_caption=file_caption, file_size=file_size))
             await jj.edit(f"Found {len(id_list)} Files In The DB Starting To Send In Chat {args}\nProcessed: {j+1}")
             col.update_one({'_id': 'last_msg'}, {'$set': {'index': j}}, upsert=True)
             await asyncio.sleep(random.randint(4,9))
