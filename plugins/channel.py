@@ -177,7 +177,7 @@ async def handle_callback(app, callback_query):
 
 
 @Client.on_message(filters.command("sendlast") & filters.user(ADMINS))
-async@Client.on_message(filters.command("sendlast") & filters.user(ADMINS))
+#async@Client.on_message(filters.command("sendlast") & filters.user(ADMINS))
 async def send_last_messages(app, msg):
     try:
         count = int(msg.command[1])
