@@ -68,46 +68,46 @@ async def x(app, msg):
         
         #await jj.edit(f"Found {len(id_list)} Files In The DB Starting To Send In Chat {args}")
         
-    for j , i in enumerate(id_list[last_msg:]):
-        try:
+        for j , i in enumerate(id_list[last_msg:]):
             try:
-                await app.send_video(
-                    msg.chat.id,
-                    i['id'],
-                    caption=CUSTOM_FILE_CAPTION.format(
-                        file_name=i['file_name'],
-                        file_caption=i['file_caption'],
-                        file_size=get_size(int(i['file_size']))
+                try:
+                    await app.send_video(
+                        msg.chat.id,
+                        i['id'],
+                        caption=CUSTOM_FILE_CAPTION.format(
+                            file_name=i['file_name'],
+                            file_caption=i['file_caption'],
+                            file_size=get_size(int(i['file_size']))
+                        )
                     )
-                )
-                await jj.edit(f"Found {len(id_list)} Files In The DB Starting To Send In Chat {args}\nProcessed : {j+1}")
-                col.update_one({'_id':'last_msg'},{'$set':{'index':j}},upsert=True)
-                await asyncio.sleep(random.randint(4, 6))
-            except Exception as e:
-                print(e)
-        except Exception:
-            try:
-                await app.send_document(
-                    msg.chat.id,
-                    i['id'],
-                    caption=CUSTOM_FILE_CAPTION.format(
-                        file_name=i['file_name'],
-                        file_caption=i['file_caption'],
-                        file_size=get_size(int(i['file_size']))
-                    )
-                )
-                await jj.edit(f"Found {len(id_list)} Files In The DB Starting To Send In Chat {args}\nProcessed : {j+1}")
-                col.update_one({'_id':'last_msg'},{'$set':{'index':j}},upsert=True)
-                await asyncio.sleep(random.randint(4, 6))
+                    await jj.edit(f"Found {len(id_list)} Files In The DB Starting To Send In Chat {args}\nProcessed : {j+1}")
+                    col.update_one({'_id':'last_msg'},{'$set':{'index':j}},upsert=True)
+                    await asyncio.sleep(random.randint(4, 6))
+                except Exception as e:
+                    print(e)
+            except Exception:
+                try:
+                    await app.send_document(
+                        msg.chat.id,
+                        i['id'],
+                        caption=CUSTOM_FILE_CAPTION.format(
+                            file_name=i['file_name'],
+                            file_caption=i['file_caption'],
+                            file_size=get_size(int(i['file_size']))
+                        )
+                   )
+                    await jj.edit(f"Found {len(id_list)} Files In The DB Starting To Send In Chat {args}\nProcessed : {j+1}")
+                    col.update_one({'_id':'last_msg'},{'$set':{'index':j}},upsert=True)
+                    await asyncio.sleep(random.randint(4, 6))
             
-            except Exception as e:
-                print(e)
+                except Exception as e:
+                    print(e)
         
-        await jj.delete()
-        await msg.reply_text("Completed")
+            await jj.delete()
+            await msg.reply_text("Completed")
     
-    except Exception as e:
-        print(f"Error: {str(e)}")
+        except Exception as e:
+            print(f"Error: {str(e)}")
 
 
 @Client.on_message(filters.command("sendkey") & filters.user(ADMINS))
